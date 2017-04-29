@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from __future__ import print_function
 from future.standard_library import install_aliases
 install_aliases()
@@ -16,7 +14,7 @@ from flask import make_response
 app = Flask(__name__)
 
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
 
@@ -31,6 +29,7 @@ def webhook():
     r.headers['Content-Type'] = 'application/json'
     return r
 
+#response = requests.get('https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20151023T145251Z.bf1ca7097253ff7e.c0b0a88bea31ba51f72504cc0cc42cf891ed90d2&text='+text+'&lang=en-'+langueges[lang])
 
 def processRequest(req):
 
@@ -50,7 +49,7 @@ def processRequest(req):
     #if yql_query is None:
     #    return {}
     #yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
-    #result = urlopen(baseurl).read()
+   # result = urlopen(baseurl).read()
     #data = json.loads(result)
     data = response.json()
     res = makeWebhookResult(data)
