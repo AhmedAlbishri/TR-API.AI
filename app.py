@@ -36,7 +36,7 @@ def webhook():
 
 
 if __name__ == '__main__':
-    PORT = 8080
+    PORT = 12345
 
     APP.run(
         debug=True,
