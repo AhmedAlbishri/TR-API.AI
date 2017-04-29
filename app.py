@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-import urllib
 import json
-import os
 import requests
 
 from flask import Flask
@@ -10,24 +8,55 @@ from flask import request
 from flask import make_response
 
 # Flask app should start in global layout
-app = Flask(__name__)
+APP = Flask(__name__)
+LOG = APP.logger
 
 
-@app.route('/webhook', methods=['POST'])
+@APP.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
+    action = req.get('result').get('action')
 
-    print("Request:")
-    print(json.dumps(req, indent=4))
+    #if action == 'translate.text':
+    text = req['result']['parameters'].get('text')
+    langto = req['result']['parameters'].get('lang-to')
+    lang =""
+    if langto == "Spanish":
+        lang = "es"
+    elif langto == "Arabic":
+        lang = "ar"
+    elif langto == "French":
+        lang = "fr"
+    elif langto == "Urdu":
+        lang = "ur"
+    else:
+        lang = "en"
 
-    res = makeWebhookResult(req)
+    response = requests.get('https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20151023T145251Z.bf1ca7097253ff7e.c0b0a88bea31ba51f72504cc0cc42cf891ed90d2&text=' + text + '&lang=en-' + lang)
+    data = response.json()
+
+    tr_txt = data['text']
+
+    speech = "Translation is " + tr_txt
+
+    print("Response:")
+    print(speech)
+
+    res_sp = {
+        "speech": speech,
+        "displayText": speech,
+        # "data": {},
+        # "contextOut": [],
+        "source": "Ahmed"
+    }
+    res = res_sp
 
     res = json.dumps(res, indent=4)
     print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
-
+"""
 def makeWebhookResult(req):
     if req.get("result").get("action") != "translate.text":
         return {}
@@ -68,11 +97,13 @@ def makeWebhookResult(req):
         # "contextOut": [],
         "source": "Ahmed"
     }
-
+"""
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
+    PORT = 8080
 
-    print "Starting app on port %d" % port
-
-    app.run(debug=True, port=port, host='0.0.0.0')
+    APP.run(
+        debug=True,
+        port=PORT,
+        host='0.0.0.0'
+    )
