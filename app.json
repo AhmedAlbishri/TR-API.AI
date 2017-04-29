@@ -1,0 +1,7 @@
+{
+  "name": "API.AI Translation Sample Webhook",
+  "description": "API.AI Translation Sample",
+  "repository": "https://github.com/AhmedAlbishri/TR-API.AI",
+  "logo": "http://xvir.github.io/img/apiai.png",
+  "keywords": ["api.ai", "natural language"]
+}
