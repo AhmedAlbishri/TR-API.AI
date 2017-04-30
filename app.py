@@ -3,7 +3,7 @@
 
 from __future__ import print_function
 from future.standard_library import install_aliases
-
+install_aliases()
 import json
 import os
 
@@ -18,8 +18,11 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 
-@app.route('/webhook', methods=['POST'])
+@app.route('/', methods=['GET'])
+def hello():
+    return 'Hello world1'
 
+@app.route('/webhook', methods=['POST', 'GET'])
 def webhook():
     print('get data from request...')
     data = request.get_json(silent=True, force=True)
@@ -27,7 +30,7 @@ def webhook():
     
     
     req = makeWebhookResult(data)
-    req = json.dumps(req, indent=4)
+    req = json.dumps(req, indent=4).encode('utf8')
 
     print('make the response...')
 
@@ -60,4 +63,6 @@ def makeWebhookResult(req):
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-    app.run(debug=True, port=port, host='0.0.0.0')
+     print("Starting app on port %d" % port)
+        
+app.run(debug=True, port=port, host='0.0.0.0')
