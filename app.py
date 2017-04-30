@@ -3,7 +3,12 @@
 import json
 import os
 import requests
+from urllib.parse import urlparse, urlencode
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError
 
+import datetime
+import unicodedata
 from flask import Flask
 from flask import request
 from flask import make_response
@@ -29,7 +34,7 @@ def webhook():
         "source": "Ahmed"
     }
     res = res_sp
-    res = json.dumps(res)
+    res = json.dumps(res, indent=4)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
