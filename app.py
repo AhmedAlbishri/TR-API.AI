@@ -8,20 +8,20 @@ from flask import request
 from flask import make_response
 
 # Flask app should start in global layout
-APP = Flask(__name__)
-LOG = APP.logger
+app = Flask(__name__)
+LOG = app.logger
 
-@APP.route('/webhook', methods=['POST'])
+@app.route('/webhook', methods=['POST'])
 def webhook():
-    req = request.get_json(silent=True, force=True)
+    #req = request.get_json(silent=True, force=True)
 
-    text = req['result']['parameters'].get('text')
-    langto = req['result']['parameters'].get('lang-to')
+    #text = req['result']['parameters'].get('text')
+    #langto = req['result']['parameters'].get('lang-to')
 
-    speech = "Translation is " + text
+    speech = "Translation is hello" #+ text
 
-    print("Response:")
-    print(speech)
+    #print("Response:")
+    #print(speech)
 
     res_sp = {
         "speech": speech,
@@ -38,7 +38,7 @@ def webhook():
 if __name__ == '__main__':
     PORT = 12345
 
-    APP.run(
+    app.run(
         debug=True,
         port=PORT,
         host='0.0.0.0'
