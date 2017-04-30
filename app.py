@@ -3,7 +3,6 @@
 
 from __future__ import print_function
 from future.standard_library import install_aliases
-install_aliases()
 
 import json
 import os
@@ -46,8 +45,8 @@ def makeWebhookResult(req):
     
     #text = req['result']['parameters'].get('text')
     #langto = req['result']['parameters'].get('lang-to')
-    text = data['text']
-    speech = "Translation is hello" + text
+    #text = data['text']
+    speech = "Translation is hello"
 
     #print("Response:")
     #print(speech)
